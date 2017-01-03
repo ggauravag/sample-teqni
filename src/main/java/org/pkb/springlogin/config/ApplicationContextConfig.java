@@ -5,10 +5,11 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import org.hibernate.SessionFactory;
-import org.pkb.springlogin.dao.UserInfoDAO;
 import org.pkb.springlogin.security.JwtAuthSuccessHandler;
 import org.pkb.springlogin.security.JwtAuthenticationTokenFilter;
+import org.pkb.springlogin.security.JwtLogoutHandler;
 import org.pkb.springlogin.security.JwtTokenUtil;
+import org.pkb.springlogin.security.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,10 +18,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
-import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
+import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -36,9 +36,6 @@ public class ApplicationContextConfig {
 	// and stores all the properties loaded by the @PropertySource
 	@Autowired
 	private Environment env;
-
-	@Autowired
-	private UserInfoDAO userInfoDAO;
 
 	@Bean
 	public ResourceBundleMessageSource messageSource() {
@@ -61,6 +58,18 @@ public class ApplicationContextConfig {
 		JwtAuthenticationTokenFilter.tokenParam = env.getProperty("jwt.parameter");
 		JwtAuthenticationTokenFilter authenticationTokenFilter = new JwtAuthenticationTokenFilter();
 		return authenticationTokenFilter;
+	}
+
+	@Bean(name = "logoutHandler")
+	public JwtLogoutHandler getLogoutHandler() {
+		JwtLogoutHandler logoutHandler = new JwtLogoutHandler(env.getProperty("jwt.parameter"));
+		return logoutHandler;
+	}
+
+	@Bean(name = "tokenRepository")
+	public TokenRepository getTokenRepository(JwtTokenUtil tokenUtil) {
+		TokenRepository repository = new TokenRepository(tokenUtil);
+		return repository;
 	}
 
 	@Bean(name = "tokenUtil")
@@ -94,12 +103,12 @@ public class ApplicationContextConfig {
 	}
 
 	@Bean(name = "sessionFactory")
-	public AnnotationSessionFactoryBean getSessionFactory() {
-		AnnotationSessionFactoryBean asfb = new AnnotationSessionFactoryBean();
-		asfb.setDataSource(getDataSource());
-		asfb.setHibernateProperties(getHibernateProperties());
-		asfb.setPackagesToScan(new String[] { "org.pkb.springlogin.model" });
-		return asfb;
+	public LocalSessionFactoryBean getSessionFactory() {
+		LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
+		sessionFactoryBean.setDataSource(getDataSource());
+		sessionFactoryBean.setHibernateProperties(getHibernateProperties());
+		sessionFactoryBean.setPackagesToScan(new String[] { "org.pkb.springlogin.model" });
+		return sessionFactoryBean;
 	}
 
 	@Bean

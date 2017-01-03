@@ -2,18 +2,16 @@
 
 <div style="border: 1px solid #ccc; padding: 5px; margin-bottom: 20px;">
 
-	<a href="${pageContext.request.contextPath}/?authToken=${authToken}">Home</a>
-
+	<a
+		href="${pageContext.request.contextPath}/user?${authParameter}=${authToken}">Home</a>
 	| &nbsp; <a
-		href="${pageContext.request.contextPath}/user?authToken=${authToken}">User
-		Info</a> | &nbsp; <a
-		href="${pageContext.request.contextPath}/admin?authToken=${authToken}">Admin</a>
+		href="${pageContext.request.contextPath}/admin?${authParameter}=${authToken}">Admin</a>
 
 	<c:if test="${pageContext.request.userPrincipal.name != null}">
   
      | &nbsp;
      <a
-			href="${pageContext.request.contextPath}/logout?authToken=${authToken}">Logout</a>
+			href="${pageContext.request.contextPath}/logout?${authParameter}=${authToken}">Logout</a>
 
 	</c:if>
 

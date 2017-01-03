@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <html>
 <head>
 <title>TeqniHome</title>
@@ -87,38 +87,46 @@
 			</div>
 			<div role="tabpanel" class="tab-pane" id="register">
 				<br />
-				<form>
+				<form action="${pageContext.request.contextPath}/register"
+					method="post">
 					<div class="form-group">
 						<label for="inputFirstName">First Name</label> <input type="text"
-							class="form-control" id="inputFirstName" placeholder="First Name">
+							class="form-control" id="inputFirstName" name="firstName"
+							placeholder="First Name">
 					</div>
 					<div class="form-group">
 						<label for="inputLastName">Last Name</label> <input type="text"
-							class="form-control" id="inputLastName" placeholder="Last Name">
+							class="form-control" id="inputLastName" name="lastName"
+							placeholder="Last Name">
 					</div>
 					<div class="form-group">
 						<label for="inputDOB">Date Of Birth</label> <input type="date"
-							class="form-control" id="inputDOB" placeholder="Date of Birth">
+							class="form-control" id="inputDOB" name="dateOfBirth"
+							placeholder="Date of Birth">
 					</div>
 					<div class="form-group">
 						<label for="inputUserType">User Type</label> <select
-							class="form-control" id="inputUserType" placeholder="User Type">
-							<option value="ROLE_USER">User</option>
-							<option value="ROLE_ADMIN">Admin</option>
+							class="form-control" id="inputUserType" name="userRole"
+							placeholder="User Type">
+							<option value="USER">User</option>
+							<option value="ADMIN">Admin</option>
+							<option value="OBSERVER">Observer</option>
 						</select>
 					</div>
 					<div class="form-group">
 						<label for="inputDOB">Email Address</label> <input type="email"
-							class="form-control" id="inputEmail" placeholder="Email">
+							class="form-control" id="inputEmail" name="email"
+							placeholder="Email">
 					</div>
 					<div class="form-group">
 						<label for="inputUsername">Username</label> <input type="text"
-							class="form-control" id="inputUsername"
+							class="form-control" name="username" id="inputUsername"
 							placeholder="Enter Username">
 					</div>
 					<div class="form-group">
 						<label for="inputPassword">Password</label> <input type="password"
-							class="form-control" id="inputPassword" placeholder="Password">
+							class="form-control" id="inputPassword" name="password"
+							placeholder="Password">
 					</div>
 
 

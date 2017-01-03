@@ -1,9 +1,7 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@page session="true"%>
-
+<%@page session="false"%>
 <html>
 <head>
-<title>TeqniHome</title>
+<title>TeqniHome Dashboard</title>
 
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
@@ -30,7 +28,6 @@
 </style>
 </head>
 <body>
-	<jsp:include page="_menu.jsp" />
 	<div class="container">
 
 		<div class="page-header">
@@ -39,15 +36,10 @@
 			</h1>
 		</div>
 
-		<h2>Admin Page</h2>
+		<h3>${messageTitle}</h3>
+		<p>${messageBody}</p>
 
-
-		<h3>Welcome : ${pageContext.request.userPrincipal.name}</h3>
-
-		<b>This is protected page!</b>
 	</div>
-
-
 	<script src="https://code.jquery.com/jquery-2.2.2.js"
 		integrity="sha256-4/zUCqiq0kqxhZIyp4G0Gk+AOtCJsY1TA00k5ClsZYE="
 		crossorigin="anonymous"></script>
