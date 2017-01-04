@@ -30,6 +30,9 @@ public class User {
 	@Column(name = "LAST_NAME", nullable = true)
 	private String lastName;
 
+	@Column(name = "IS_ACCOUNT_VERIFIED", nullable = false)
+	private Boolean accountVerified = false;
+
 	/**
 	 * 
 	 */
@@ -60,6 +63,14 @@ public class User {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.dateOfBirth = dateOfBirth;
+	}
+
+	public Boolean getAccountVerified() {
+		return accountVerified;
+	}
+
+	public void setAccountVerified(Boolean accountVerified) {
+		this.accountVerified = accountVerified;
 	}
 
 	public String getEmail() {

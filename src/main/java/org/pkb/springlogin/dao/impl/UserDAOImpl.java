@@ -30,6 +30,12 @@ public class UserDAOImpl implements UserDAO {
 		Session session = sessionFactory.getCurrentSession();
 		session.save(user);
 	}
+	
+	@Override
+	public void updateUser(User user) {
+		Session session = sessionFactory.getCurrentSession();
+		session.update(user);
+	}
 
 	@Override
 	public Role getRole(String name) {
@@ -38,6 +44,15 @@ public class UserDAOImpl implements UserDAO {
 		criteria.add(Restrictions.eq("name", name));
 		Role role = (Role) criteria.uniqueResult();
 		return role;
+	}
+
+	@Override
+	public User getUserByEmail(String email) {
+		Session session = sessionFactory.getCurrentSession();
+		Criteria criteria = session.createCriteria(User.class);
+		criteria.add(Restrictions.eq("email", email));
+		User user = (User) criteria.uniqueResult();
+		return user;
 	}
 
 }

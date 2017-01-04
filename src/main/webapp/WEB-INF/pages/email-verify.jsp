@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>${title}</title>
+<title>TeqniHome</title>
+
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
@@ -16,6 +17,20 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
 	integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
 	crossorigin="anonymous">
+
+<style type="text/css">
+.text-hidden {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.text-shown {
+	word-wrap: break-word;
+}
+</style>
+
+<script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 <body>
 	<jsp:include page="_menu.jsp" />
@@ -26,9 +41,10 @@
 			</h1>
 		</div>
 
-		<p style="color: green">You have successfully logged out !</p>
-	</div>
+		<h2>${title}</h2>
+		<h3>${message}</h3>
 
+	</div>
 
 	<script src="https://code.jquery.com/jquery-2.2.2.js"
 		integrity="sha256-4/zUCqiq0kqxhZIyp4G0Gk+AOtCJsY1TA00k5ClsZYE="
@@ -38,5 +54,7 @@
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
 		integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
 		crossorigin="anonymous"></script>
+
+	<!-- <script src="js/client.js"></script> -->
 </body>
 </html>

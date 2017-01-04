@@ -10,5 +10,9 @@ public interface UserDAO {
 	public void createUser(User user);
 
 	Role getRole(String name);
+
+	User getUserByEmail(String email);
+
+	void updateUser(User user);
 	
 }

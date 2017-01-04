@@ -10,6 +10,9 @@ import org.pkb.springlogin.security.JwtAuthenticationTokenFilter;
 import org.pkb.springlogin.security.JwtLogoutHandler;
 import org.pkb.springlogin.security.JwtTokenUtil;
 import org.pkb.springlogin.security.TokenRepository;
+import org.pkb.springlogin.utils.EmailService;
+import org.pkb.springlogin.utils.EncryptionUtility;
+import org.pkb.springlogin.utils.GoogleRecaptchaUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -45,6 +48,19 @@ public class ApplicationContextConfig {
 		return rb;
 	}
 
+	@Bean(name = "emailService")
+	public EmailService getEmailService() {
+		EmailService service = new EmailService(env.getProperty("smtp.username"), env.getProperty("smtp.password"),
+				env.getProperty("smtp.host"), env.getProperty("smtp.port"));
+		return service;
+	}
+
+	@Bean(name = "encryptionUtility")
+	public EncryptionUtility getEncryptionUtility() {
+		EncryptionUtility utility = new EncryptionUtility(env.getProperty("encryption.key"));
+		return utility;
+	}
+
 	@Bean(name = "viewResolver")
 	public InternalResourceViewResolver getViewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -64,6 +80,11 @@ public class ApplicationContextConfig {
 	public JwtLogoutHandler getLogoutHandler() {
 		JwtLogoutHandler logoutHandler = new JwtLogoutHandler(env.getProperty("jwt.parameter"));
 		return logoutHandler;
+	}
+
+	@Bean(name = "googleRecaptchaUtils")
+	public GoogleRecaptchaUtils getRecaptchaUtils() {
+		return new GoogleRecaptchaUtils(env.getProperty("google.postUrl"), env.getProperty("google.secret"));
 	}
 
 	@Bean(name = "tokenRepository")

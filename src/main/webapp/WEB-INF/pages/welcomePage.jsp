@@ -29,9 +29,11 @@
 	word-wrap: break-word;
 }
 </style>
+
+<script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 <body>
-
+	<jsp:include page="_menu.jsp" />
 	<div class="container">
 
 		<div class="page-header">
@@ -42,7 +44,9 @@
 
 		<c:if test="${param.error != null}">
 			<div class="alert alert-danger" role="alert">
-				Your login attempt was not successful, try again.<br />
+				Your login attempt was not successful.<br />
+
+				<c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />
 			</div>
 		</c:if>
 
@@ -87,8 +91,8 @@
 			</div>
 			<div role="tabpanel" class="tab-pane" id="register">
 				<br />
-				<form action="${pageContext.request.contextPath}/register"
-					method="post">
+				<form id="registrationForm"
+					action="${pageContext.request.contextPath}/register" method="post">
 					<div class="form-group">
 						<label for="inputFirstName">First Name</label> <input type="text"
 							class="form-control" id="inputFirstName" name="firstName"
@@ -129,10 +133,15 @@
 							placeholder="Password">
 					</div>
 
+					<div class="form-group">
+						<div class="g-recaptcha"
+							data-sitekey="6LdjihAUAAAAAAVHqW6UupRdNghQ9Vovv_zsbS4t"></div>
+					</div>
 
 					<div class="form-group">
 						<div class="col-sm-offset-3 col-sm-4">
-							<button type="submit" class="btn btn-success">Register</button>
+							<button type="button" class="btn btn-success"
+								onclick="submitForm()">Register</button>
 						</div>
 						<div class="col-sm-4">
 							<button type="reset" class="btn btn-default">Reset</button>
@@ -153,6 +162,19 @@
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
 		integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
 		crossorigin="anonymous"></script>
+
+	<script type="text/javascript">
+		function submitForm() {
+			var registrationForm = document.getElementById("registrationForm");
+			var response = grecaptcha.getResponse();
+
+			if (response.length == 0)
+				alert("Please verify that you are human");
+			else
+				registrationForm.submit();
+
+		}
+	</script>
 	<!-- <script src="js/client.js"></script> -->
 </body>
 </html>
