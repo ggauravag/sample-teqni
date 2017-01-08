@@ -11,6 +11,8 @@
 			href="${pageContext.request.contextPath}/user?${authParameter}=${authToken}">Home</a>
 	| &nbsp; <a
 			href="${pageContext.request.contextPath}/admin?${authParameter}=${authToken}">Admin</a>
+	| &nbsp; <a
+			href="${pageContext.request.contextPath}/team?${authParameter}=${authToken}">Manage Team</a>
 
 		<c:if test="${pageContext.request.userPrincipal.name != null}">
      | &nbsp;

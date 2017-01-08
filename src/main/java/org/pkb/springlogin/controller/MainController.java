@@ -3,24 +3,32 @@ package org.pkb.springlogin.controller;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.security.Principal;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.pkb.springlogin.dto.MemberDTO;
+import org.pkb.springlogin.dto.TeamDTO;
 import org.pkb.springlogin.dto.UserDTO;
 import org.pkb.springlogin.security.JwtTokenUtil;
+import org.pkb.springlogin.service.ITeamService;
 import org.pkb.springlogin.service.IUserService;
 import org.pkb.springlogin.utils.EmailService;
 import org.pkb.springlogin.utils.EncryptionUtility;
 import org.pkb.springlogin.utils.GoogleRecaptchaUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,6 +56,9 @@ public class MainController {
 
 	@Autowired
 	private IUserService userService;
+
+	@Autowired
+	private ITeamService teamService;
 
 	@RequestMapping(value = { "/", "/login" }, method = RequestMethod.GET)
 	public String welcomePage(Model model) {
@@ -80,6 +91,31 @@ public class MainController {
 		view.addObject("authParameter", environment.getProperty("jwt.parameter"));
 		view.addObject("message", message);
 		return view;
+	}
+
+	@RequestMapping(value = "/team", method = RequestMethod.GET)
+	public ModelAndView manageTeam(Model model, @RequestParam("authToken") String authToken,
+			Authentication authentication) {
+		ModelAndView view = new ModelAndView("manage-team");
+
+		List<TeamDTO> teams = teamService.getTeams();
+
+		List<MemberDTO> members = teamService.getMembers();
+
+		view.addObject("teams", teams);
+		view.addObject("members", members);
+		view.addObject("authToken", authToken);
+		view.addObject("authParameter", environment.getProperty("jwt.parameter"));
+		return view;
+	}
+
+	@RequestMapping(value = "api/team", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<String> updateTeam(Model model, @RequestBody List<TeamDTO> teamDTOs,
+			@RequestParam("authToken") String authToken, Authentication authentication) {
+		for (TeamDTO team : teamDTOs) {
+			this.teamService.updateTeam(team);
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/verify-email", method = RequestMethod.GET)
@@ -135,7 +171,7 @@ public class MainController {
 
 			System.out.println("Encrypted email: " + encryptedEmail + ", Hash: " + hash);
 			String message = "Hi, " + user.getFirstName()
-					+ "<br/>Kindly click the <a href='http://localhost:8080/SpringMVCAnnotationSecurity/verify-email?token="
+					+ "<br/>Kindly click the <a href='http://localhost:8080/verify-email?token="
 					+ URLEncoder.encode(encryptedEmail, "UTF-8") + "&sign=" + URLEncoder.encode(hash, "UTF-8")
 					+ "'>link</a> to verify your email account";
 

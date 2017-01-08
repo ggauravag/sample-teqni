@@ -68,6 +68,83 @@ VALUES
 /*!40000 ALTER TABLE `USER_ROLE` ENABLE KEYS */;
 UNLOCK TABLES;
 
+/*Table structure for table `member` */
+
+DROP TABLE IF EXISTS `member`;
+
+CREATE TABLE `member` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+
+/*Data for the table `member` */
+
+insert  into `member`(`id`,`name`) values 
+
+(1,'Gaurav Agarwal'),
+
+(2,'Deshant Sharma'),
+
+(3,'Ajay Jain'),
+
+(4,'Bhawesh Mehta'),
+
+(5,'Anmol Jain'),
+
+(6,'Hitesh Katariya'),
+
+(7,'Hitesh Solanki'),
+
+(8,'Shubham Jain'),
+
+(9,'Lovesh Baya'),
+
+(10,'Sumit Suthar'),
+
+(11,'Mahendra Patel'),
+
+(12,'Balwant Kothari');
+
+/*Table structure for table `team` */
+
+DROP TABLE IF EXISTS `team`;
+
+CREATE TABLE `team` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_skt44h0dogoa2qdoj3qrsvikf` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+/*Data for the table `team` */
+
+insert  into `team`(`id`,`name`) values 
+
+(1,'Team A'),
+
+(2,'Team B'),
+
+(3,'Team C'),
+
+(4,'Team D');
+
+/*Table structure for table `team_member` */
+
+DROP TABLE IF EXISTS `team_member`;
+
+CREATE TABLE `team_member` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `X_MEMBER_ID` bigint(20) DEFAULT NULL,
+  `X_TEAM_ID` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_6bdc2lt0rcipq4iv7rdx96m2d` (`X_MEMBER_ID`),
+  KEY `FK_2mhgvujw71kter5bg1t3f51ig` (`X_TEAM_ID`),
+  CONSTRAINT `FK_2mhgvujw71kter5bg1t3f51ig` FOREIGN KEY (`X_TEAM_ID`) REFERENCES `team` (`id`),
+  CONSTRAINT `FK_6bdc2lt0rcipq4iv7rdx96m2d` FOREIGN KEY (`X_MEMBER_ID`) REFERENCES `member` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+/*Data for the table `team_member` */
 
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
